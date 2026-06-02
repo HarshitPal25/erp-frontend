@@ -1,17 +1,56 @@
 import { Outlet, NavLink } from 'react-router-dom';
+import { LayoutDashboard, ShoppingCart, Users, Package, Box } from 'lucide-react';
+import { clsx } from 'clsx';
+
+const navItems = [
+  { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/orders', label: 'Orders', icon: ShoppingCart, end: false },
+  { to: '/customers', label: 'Customers', icon: Users, end: false },
+  { to: '/inventory', label: 'Inventory', icon: Package, end: false },
+];
 
 export function AppLayout() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <aside className="fixed left-0 top-0 h-screen w-64 border-r bg-white p-4">
-        <h1 className="text-xl font-bold">ERP</h1>
+      <aside className="fixed left-0 top-0 h-screen w-64 border-r border-gray-200 bg-white flex flex-col">
+        <div className="flex items-center gap-2.5 px-5 py-5 border-b border-gray-100">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
+            <Box size={16} className="text-white" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-900 leading-tight">Amar Packers</p>
+            <p className="text-xs text-gray-400 leading-tight">ERP System</p>
+          </div>
+        </div>
 
-        <nav className="mt-6 flex flex-col gap-2">
-          <NavLink className="rounded-lg px-3 py-2 hover:bg-gray-100" to="/">Dashboard</NavLink>
-          <NavLink className="rounded-lg px-3 py-2 hover:bg-gray-100" to="/orders">Orders</NavLink>
-          <NavLink className="rounded-lg px-3 py-2 hover:bg-gray-100" to="/customers">Customers</NavLink>
-          <NavLink className="rounded-lg px-3 py-2 hover:bg-gray-100" to="/inventory">Inventory</NavLink>
+        <nav className="flex flex-col gap-1 px-3 py-4 flex-1">
+          {navItems.map(({ to, label, icon: Icon, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                clsx(
+                  'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150',
+                  isActive
+                    ? 'bg-blue-50 text-blue-600'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                )
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon size={18} className={isActive ? 'text-blue-600' : 'text-gray-400'} />
+                  {label}
+                </>
+              )}
+            </NavLink>
+          ))}
         </nav>
+
+        <div className="px-4 py-4 border-t border-gray-100">
+          <p className="text-xs text-gray-400">v1.0.0</p>
+        </div>
       </aside>
 
       <main className="ml-64 p-6">
