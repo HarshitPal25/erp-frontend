@@ -2,6 +2,7 @@ import { type ElementType } from 'react';
 import { ShoppingCart, Factory, Package, Truck, TrendingUp, TrendingDown } from 'lucide-react';
 import clsx from 'clsx';
 import { RecentOrdersTable } from './components/RecentOrdersTable';
+import { QuickActions } from './components/QuickActions';
 
 type Trend = 'up' | 'down' | 'neutral';
 
@@ -115,8 +116,13 @@ export function DashboardPage() {
         })}
       </div>
 
-      <div className="mt-6">
-        <RecentOrdersTable />
+      <div className="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <div className="xl:col-span-2">
+          <RecentOrdersTable />
+        </div>
+        <div>
+          <QuickActions />
+        </div>
       </div>
     </div>
   );
