@@ -1,12 +1,12 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { LayoutDashboard, ShoppingCart, Users, Package, Box } from 'lucide-react';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
-  { to: '/orders', label: 'Orders', icon: ShoppingCart, end: false },
-  { to: '/customers', label: 'Customers', icon: Users, end: false },
-  { to: '/inventory', label: 'Inventory', icon: Package, end: false },
+  { to: '/orders', label: 'Orders', icon: ShoppingCart },
+  { to: '/customers', label: 'Customers', icon: Users },
+  { to: '/inventory', label: 'Inventory', icon: Package },
 ];
 
 export function AppLayout() {
@@ -15,7 +15,7 @@ export function AppLayout() {
       <aside className="fixed left-0 top-0 h-screen w-64 border-r border-gray-200 bg-white flex flex-col">
         <div className="flex items-center gap-2.5 px-5 py-5 border-b border-gray-100">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-            <Box size={16} className="text-white" />
+            <Box size={16} className="text-white" aria-hidden="true" />
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-900 leading-tight">Amar Packers</p>
@@ -40,7 +40,7 @@ export function AppLayout() {
             >
               {({ isActive }) => (
                 <>
-                  <Icon size={18} className={isActive ? 'text-blue-600' : 'text-gray-400'} />
+                  <Icon size={18} className={isActive ? 'text-blue-600' : 'text-gray-400'} aria-hidden="true" />
                   {label}
                 </>
               )}
