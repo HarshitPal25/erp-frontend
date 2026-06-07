@@ -1,113 +1,94 @@
-import { ClipboardList } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { mockOrders } from '../../../mocks/orders';
-import { StatusBadge } from '../../../components/ui/StatusBadge';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
+const API_URL = "http://localhost:5000/api/orders";
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
-}
-
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center justify-center py-14 text-center">
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-        <ClipboardList size={22} className="text-gray-400" aria-hidden="true" />
-      </div>
-      <p className="mt-3 text-sm font-medium text-gray-900">No orders yet</p>
-      <p className="mt-1 text-sm text-gray-500">New orders will appear here once created.</p>
-      <Link
-        to="/orders"
-        className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700 transition-colors"
-      >
-        Create first order
-      </Link>
-    </div>
-  );
+interface Order {
+  _id: string;
+  orderNumber: string;
+  customerName: string;
+  itemName: string;
+  quantityOrdered: number;
+  status: string;
 }
 
 export function RecentOrdersTable() {
-  const orders = mockOrders.slice(0, 5);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(API_URL);
+      setOrders(res.data.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="rounded-xl border bg-white p-6">
+        Loading Orders...
+      </div>
+    );
+  }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-        <div>
-          <h2 className="text-sm font-semibold text-gray-900">Recent Orders</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Latest 5 orders across all customers</p>
-        </div>
-        <Link
-          to="/orders"
-          className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          View all →
-        </Link>
+    <div className="rounded-xl border bg-white shadow-sm">
+      <div className="border-b px-5 py-4">
+        <h2 className="text-lg font-semibold">
+          Recent Orders
+        </h2>
       </div>
 
-      {orders.length === 0 ? (
-        <EmptyState />
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50/60">
-                <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  Order #
-                </th>
-                <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  Customer
-                </th>
-                <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  Box Type
-                </th>
-                <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  Qty
-                </th>
-                <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  Date
-                </th>
-                <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  Status
-                </th>
-                <th className="px-5 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  Total
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {orders.map((order) => (
-                <tr
-                  key={order.id}
-                  className="hover:bg-gray-50 transition-colors duration-100"
-                >
-                  <td className="px-5 py-3.5 font-medium text-blue-600">{order.orderNumber}</td>
-                  <td className="px-5 py-3.5 text-gray-900">{order.customer}</td>
-                  <td className="px-5 py-3.5 text-gray-600">{order.boxType}</td>
-                  <td className="px-5 py-3.5 text-gray-600">{order.qty.toLocaleString('en-IN')}</td>
-                  <td className="px-5 py-3.5 text-gray-500">{formatDate(order.date)}</td>
-                  <td className="px-5 py-3.5">
-                    <StatusBadge status={order.status} />
-                  </td>
-                  <td className="px-5 py-3.5 text-right font-medium text-gray-900">
-                    {formatCurrency(order.total)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <table className="w-full">
+        <thead>
+          <tr className="bg-gray-50 text-left">
+            <th className="p-3">Order</th>
+            <th className="p-3">Customer</th>
+            <th className="p-3">Item</th>
+            <th className="p-3">Qty</th>
+            <th className="p-3">Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {orders.map((order) => (
+            <tr
+              key={order._id}
+              className="border-t hover:bg-gray-50"
+            >
+              <td className="p-3">
+                {order.orderNumber}
+              </td>
+
+              <td className="p-3">
+                {order.customerName}
+              </td>
+
+              <td className="p-3">
+                {order.itemName}
+              </td>
+
+              <td className="p-3">
+                {order.quantityOrdered}
+              </td>
+
+              <td className="p-3">
+                <span className="rounded bg-yellow-100 px-2 py-1 text-sm">
+                  {order.status}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
