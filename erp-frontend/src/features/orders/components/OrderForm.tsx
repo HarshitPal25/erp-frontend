@@ -47,6 +47,7 @@ const schema = z.object({
   dieRate: z.string().optional(),
   stitchingRate: z.string().optional(),
   strappingRate: z.string().optional(),
+  printingCost: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -110,19 +111,22 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
       dieRate: '',
       stitchingRate: '',
       strappingRate: '',
+      printingCost: '',
       ...defaultValues,
     },
   });
 
   const onValidSubmit = (values: FormValues) => {
     // Strip all UI-only calculation fields
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const {
       boxesPerSheet, duplexLength, duplexBreadth, duplexGsm, duplexRate,
       numberOf2Ply, twoPlyGsm, twoPlyRate, spotUvSize, spotUvCost, spotUvSheets,
       lamRollSize, lamSheetLength, lamType, fevicolCostPerSheet, lamCostPerSheet,
-      sheeterRate, pastingRate, dieRate, stitchingRate, strappingRate,
+      sheeterRate, pastingRate, dieRate, stitchingRate, strappingRate, printingCost,
       ...backendData
     } = values;
+    /* eslint-enable @typescript-eslint/no-unused-vars */
     
     onSubmit(backendData as unknown as OrderFormData);
   };
@@ -166,7 +170,7 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
   const laminationTotalCost = isLaminated ? (lamCostPerSht + fevicolCost) * duplexQtyReq : 0;
 
   // Printing
-  const printingCost = isPrinted ? parseNum(watch('printingCost' as any)) || 0 : 0; // Using placeholder if printed charges applied later
+  const printingCost = isPrinted ? parseNum(watch('printingCost')) || 0 : 0; // Using placeholder if printed charges applied later
 
   // Processing
   const sheeterCost = parseNum(watch('sheeterRate')) * num2Ply; // per 2 ply
