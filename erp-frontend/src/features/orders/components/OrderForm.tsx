@@ -357,30 +357,30 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
-        <div className="flex items-center gap-3 mb-4 border-b border-gray-700 pb-4">
-          <div className="bg-blue-500/20 p-2 rounded-lg">
-            <Calculator className="w-5 h-5 text-blue-400" />
+      <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100">
+        <div className="flex items-center gap-3 mb-4 border-b border-blue-200 pb-4">
+          <div className="bg-blue-100 p-2 rounded-lg">
+            <Calculator className="w-5 h-5 text-blue-600" />
           </div>
-          <h4 className="text-base font-semibold text-white uppercase tracking-wider">Tentative Cost Summary</h4>
+          <h4 className="text-base font-semibold text-gray-900 uppercase tracking-wider">Tentative Cost Summary</h4>
         </div>
         
         <div className="grid grid-cols-2 gap-x-12 gap-y-3 mb-6">
-          <div className="flex justify-between text-sm"><span className="text-gray-400">Duplex Cost:</span> <span className="text-gray-200">₹ {duplexTotalCost.toFixed(2)}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-gray-400">Lamination Cost:</span> <span className="text-gray-200">₹ {laminationTotalCost.toFixed(2)}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-gray-400">2-Ply Cost:</span> <span className="text-gray-200">₹ {twoPlyTotalCost.toFixed(2)}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-gray-400">Processing Cost:</span> <span className="text-gray-200">₹ {processingTotal.toFixed(2)}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-gray-400">Spot UV Cost:</span> <span className="text-gray-200">₹ {spotUvTotalCost.toFixed(2)}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-gray-600">Duplex Cost:</span> <span className="text-gray-900 font-medium">₹ {duplexTotalCost.toFixed(2)}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-gray-600">Lamination Cost:</span> <span className="text-gray-900 font-medium">₹ {laminationTotalCost.toFixed(2)}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-gray-600">2-Ply Cost:</span> <span className="text-gray-900 font-medium">₹ {twoPlyTotalCost.toFixed(2)}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-gray-600">Processing Cost:</span> <span className="text-gray-900 font-medium">₹ {processingTotal.toFixed(2)}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-gray-600">Spot UV Cost:</span> <span className="text-gray-900 font-medium">₹ {spotUvTotalCost.toFixed(2)}</span></div>
         </div>
 
-        <div className="bg-gray-800/50 rounded-lg p-4 flex justify-between items-center border border-gray-700">
+        <div className="bg-white rounded-lg p-4 flex justify-between items-center border border-blue-100 shadow-sm">
           <div>
-            <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Per Box Cost</div>
-            <div className="text-3xl font-bold text-green-400">₹ {perBoxCost.toFixed(2)}</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider mb-1 font-medium">Per Box Cost</div>
+            <div className="text-3xl font-bold text-green-600">₹ {perBoxCost.toFixed(2)}</div>
           </div>
           <div className="text-right">
-            <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Order Cost</div>
-            <div className="text-xl font-bold text-white">₹ {totalCostOverall.toFixed(2)}</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider mb-1 font-medium">Total Order Cost</div>
+            <div className="text-xl font-bold text-gray-900">₹ {totalCostOverall.toFixed(2)}</div>
           </div>
         </div>
       </div>
