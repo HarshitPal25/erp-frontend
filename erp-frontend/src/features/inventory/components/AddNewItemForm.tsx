@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import type { InventoryItem } from '../types';
 import { STOCK_CATEGORIES } from '../../../mocks/inventory';
 
 const schema = z.object({

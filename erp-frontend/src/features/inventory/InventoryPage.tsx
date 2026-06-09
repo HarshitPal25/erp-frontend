@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PackageSearch, AlertCircle, TrendingDown, Plus } from 'lucide-react';
+import { AlertCircle, Plus } from 'lucide-react';
 import { useInventoryCategories, useInventory, useAddStockTransaction, useLedger, useCreateItem } from './hooks/useInventory';
 import { StockTable } from './components/StockTable';
 import { AddStockForm } from './components/AddStockForm';
@@ -8,7 +8,7 @@ import { AddNewItemForm } from './components/AddNewItemForm';
 import { SlideOver } from '../../components/ui/SlideOver';
 
 export function InventoryPage() {
-  const { data: categoriesData, isLoading: isLoadingCategories } = useInventoryCategories();
+  const { data: categoriesData } = useInventoryCategories();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   
   const { data: inventoryData, isLoading: isInventoryLoading } = useInventory(activeCategory);
