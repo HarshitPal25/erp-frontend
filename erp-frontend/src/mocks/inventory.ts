@@ -65,6 +65,26 @@ export const mockInventory: InventoryRecord[] = [
     batchNumber: 'B-2606'
   },
 
+  // Duplex Reel
+  {
+    _id: 'inv-003b',
+    itemRef: {
+      _id: 'itm-003b',
+      itemCode: 'DR-300',
+      itemName: 'Duplex Reel 300 GSM',
+      type: 'RawMaterial',
+      category: 'Duplex Reel',
+      specifications: { gsm: 300, dimensions: '36 inch' },
+      unitOfMeasure: 'KG'
+    },
+    warehouseLocation: 'Zone B - Rack 2',
+    currentStock: 2500,
+    reservedStock: 0,
+    reorderLevel: 1000,
+    lastRestockedDate: '2026-06-05T10:00:00Z',
+    batchNumber: 'R-300-1'
+  },
+
   // Lamination Film
   {
     _id: 'inv-004',

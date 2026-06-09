@@ -49,3 +49,32 @@ export async function getLedger(inventoryId: string): Promise<{ data: StockTrans
   const filtered = mockTransactions.filter(t => t.inventoryRef === inventoryId);
   return Promise.resolve({ data: filtered });
 }
+
+export async function createNewItem(data: any): Promise<{ data: InventoryRecord }> {
+  // return api.post(`/items`, itemData) followed by api.post(`/inventory`, inventoryData)
+  
+  // Mock implementation
+  const newItemRef = {
+    _id: `itm-${Math.random().toString(36).substr(2, 9)}`,
+    itemCode: data.itemCode,
+    itemName: data.itemName,
+    type: data.type,
+    category: data.category,
+    specifications: data.specifications,
+    unitOfMeasure: data.unitOfMeasure
+  };
+
+  const newInventoryRecord: InventoryRecord = {
+    _id: `inv-${Math.random().toString(36).substr(2, 9)}`,
+    itemRef: newItemRef,
+    warehouseLocation: data.warehouseLocation || 'Unassigned',
+    currentStock: Number(data.initialStock),
+    reservedStock: 0,
+    reorderLevel: Number(data.reorderLevel),
+    lastRestockedDate: new Date().toISOString(),
+    batchNumber: 'INITIAL-STOCK'
+  };
+
+  mockInventory.push(newInventoryRecord);
+  return Promise.resolve({ data: newInventoryRecord });
+}

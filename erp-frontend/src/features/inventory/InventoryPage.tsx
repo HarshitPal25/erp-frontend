@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { PackageSearch, AlertCircle, TrendingDown } from 'lucide-react';
-import { useInventoryCategories, useInventory, useAddStockTransaction, useLedger } from './hooks/useInventory';
+import { PackageSearch, AlertCircle, TrendingDown, Plus } from 'lucide-react';
+import { useInventoryCategories, useInventory, useAddStockTransaction, useLedger, useCreateItem } from './hooks/useInventory';
 import { StockTable } from './components/StockTable';
 import { AddStockForm } from './components/AddStockForm';
 import { StockLedger } from './components/StockLedger';
+import { AddNewItemForm } from './components/AddNewItemForm';
 import { SlideOver } from '../../components/ui/SlideOver';
 
 export function InventoryPage() {
@@ -12,10 +13,11 @@ export function InventoryPage() {
   
   const { data: inventoryData, isLoading: isInventoryLoading } = useInventory(activeCategory);
   const addStockMutation = useAddStockTransaction();
+  const createItemMutation = useCreateItem();
 
   // SlideOver State
   const [slideOverOpen, setSlideOverOpen] = useState(false);
-  const [slideOverMode, setSlideOverMode] = useState<'add' | 'ledger' | null>(null);
+  const [slideOverMode, setSlideOverMode] = useState<'add' | 'ledger' | 'createItem' | null>(null);
   const [selectedInventoryId, setSelectedInventoryId] = useState<string | null>(null);
 
   // Derived data for SlideOver
@@ -38,6 +40,11 @@ export function InventoryPage() {
     setSlideOverOpen(true);
   };
 
+  const handleCreateNewItem = () => {
+    setSlideOverMode('createItem');
+    setSlideOverOpen(true);
+  };
+
   const handleCloseSlideOver = () => {
     setSlideOverOpen(false);
     setTimeout(() => {
@@ -54,12 +61,21 @@ export function InventoryPage() {
           <p className="text-sm text-gray-500 mt-1">Manage raw materials, consumables, and stock levels.</p>
         </div>
         
-        {lowStockCount > 0 && (
-          <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg shadow-sm">
-            <AlertCircle size={18} />
-            <span className="text-sm font-medium">{lowStockCount} items low on stock</span>
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {lowStockCount > 0 && (
+            <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg shadow-sm">
+              <AlertCircle size={18} />
+              <span className="text-sm font-medium">{lowStockCount} items low on stock</span>
+            </div>
+          )}
+          <button
+            onClick={handleCreateNewItem}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm font-medium transition-colors"
+          >
+            <Plus size={18} />
+            <span>New Item Master</span>
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[calc(100vh-140px)]">
@@ -100,7 +116,11 @@ export function InventoryPage() {
       <SlideOver
         isOpen={slideOverOpen}
         onClose={handleCloseSlideOver}
-        title={slideOverMode === 'add' ? 'Record Stock Transaction' : 'Stock Ledger History'}
+        title={
+          slideOverMode === 'add' ? 'Record Stock Transaction' : 
+          slideOverMode === 'ledger' ? 'Stock Ledger History' : 
+          'Create New Item Master'
+        }
       >
         {slideOverMode === 'add' && selectedRecord && (
           <AddStockForm 
@@ -123,6 +143,20 @@ export function InventoryPage() {
             transactions={ledgerData?.data || []}
             isLoading={isLedgerLoading}
             unit={selectedRecord.itemRef.unitOfMeasure}
+          />
+        )}
+
+        {slideOverMode === 'createItem' && (
+          <AddNewItemForm
+            defaultCategory={activeCategory}
+            isSubmitting={createItemMutation.isPending}
+            onSubmit={(data) => {
+              createItemMutation.mutate(data, {
+                onSuccess: () => {
+                  handleCloseSlideOver();
+                }
+              });
+            }}
           />
         )}
       </SlideOver>
