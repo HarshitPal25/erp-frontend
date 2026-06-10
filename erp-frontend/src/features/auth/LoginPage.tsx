@@ -42,7 +42,7 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center px-4">
-      <div className="w-full max-w-sm rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-sm">
+      <div className="w-full max-w-sm rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-black p-6 shadow-sm">
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600">
             <Box size={20} className="text-white" aria-hidden="true" />
@@ -55,7 +55,7 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-gray-700">Email</span>
+            <span className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Email</span>
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
@@ -63,14 +63,14 @@ export function LoginPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
-                className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 py-2.5 pl-9 pr-3 text-sm text-gray-900 dark:text-gray-100 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-black py-2.5 pl-9 pr-3 text-sm text-gray-900 dark:text-gray-100 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 required
               />
             </div>
           </label>
 
           <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-gray-700">Password</span>
+            <span className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Password</span>
             <div className="relative">
               <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
@@ -78,7 +78,7 @@ export function LoginPage() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 autoComplete="current-password"
-                className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 py-2.5 pl-9 pr-3 text-sm text-gray-900 dark:text-gray-100 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-black py-2.5 pl-9 pr-3 text-sm text-gray-900 dark:text-gray-100 outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 required
               />
             </div>

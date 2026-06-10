@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'; // HMR trigger
 import { Plus, Users, Search, Pencil, Trash2 } from 'lucide-react';
 import { useCustomers, useCreateCustomer, useUpdateCustomer, useDeleteCustomer } from './hooks/useCustomers';
 import { CustomerForm } from './components/CustomerForm';
@@ -99,16 +99,16 @@ export function CustomersPage() {
             placeholder="Search by name, contact, GSTIN…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 py-2 pl-9 pr-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-white dark:bg-black py-2 pl-9 pr-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm overflow-hidden">
+      <div className="rounded-xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-black shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 dark:border-neutral-800 bg-gray-50 dark:bg-black/60">
+              <tr className="border-b border-gray-100 dark:border-neutral-800 bg-gray-50 dark:bg-black">
                 <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Company</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">GSTIN</th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Contact</th>

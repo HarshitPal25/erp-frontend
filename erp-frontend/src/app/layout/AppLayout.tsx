@@ -25,7 +25,7 @@ export function AppLayout() {
   const pageTitle = routeNames[location.pathname] ?? 'Dashboard';
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-neutral-900 transition-colors duration-200 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-200 flex">
       <aside
         className="group fixed left-0 top-0 h-screen w-16 hover:w-64 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-black flex flex-col transition-all duration-200 ease-in-out overflow-hidden z-20"
       >

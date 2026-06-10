@@ -59,7 +59,7 @@ interface OrderFormProps {
 function FormField({ label, error, children }: { label: string; error?: string; children: ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
       {children}
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
@@ -187,11 +187,11 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
   const totalCostOverall = duplexTotalCost + twoPlyTotalCost + spotUvTotalCost + laminationTotalCost + printingCost + processingTotal;
   const perBoxCost = qty > 0 ? totalCostOverall / qty : 0;
 
-  const sectionClass = "bg-white dark:bg-neutral-900 p-5 rounded-xl border border-gray-200 dark:border-neutral-800 shadow-sm";
-  const sectionTitleClass = "text-sm font-semibold text-gray-800 uppercase tracking-wide flex items-center mb-4 pb-2 border-b border-gray-100 dark:border-neutral-800";
+  const sectionClass = "bg-white dark:bg-black p-5 rounded-xl border border-gray-200 dark:border-neutral-800 shadow-sm";
+  const sectionTitleClass = "text-sm font-semibold text-gray-800 dark:text-gray-200 uppercase tracking-wide flex items-center mb-4 pb-2 border-b border-gray-100 dark:border-neutral-800";
 
   return (
-    <form onSubmit={handleSubmit(onValidSubmit)} className="space-y-6 bg-gray-50 dark:bg-black/50 p-2 rounded-xl">
+    <form onSubmit={handleSubmit(onValidSubmit)} className="space-y-6 bg-gray-50 dark:bg-black p-2 rounded-xl">
       
       <div className={sectionClass}>
         <h3 className={sectionTitleClass}>1. Order & Party Info</h3>
@@ -313,10 +313,10 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
       <div className={sectionClass}>
         <h3 className={sectionTitleClass}>5. Finishing & Spot UV</h3>
         <div className="flex gap-6 mb-6">
-          <label className="flex items-center gap-2 text-sm text-gray-700 font-medium">
+          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 font-medium">
             <input type="checkbox" {...register('printed')} className="rounded w-4 h-4 text-blue-600" /> Printed
           </label>
-          <label className="flex items-center gap-2 text-sm text-gray-700 font-medium">
+          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 font-medium">
             <input type="checkbox" {...register('laminated')} className="rounded w-4 h-4 text-blue-600" /> Laminated
           </label>
         </div>
@@ -373,7 +373,7 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
           <div className="flex justify-between text-sm"><span className="text-gray-600 dark:text-gray-400">Spot UV Cost:</span> <span className="text-gray-900 dark:text-gray-100 font-medium">₹ {spotUvTotalCost.toFixed(2)}</span></div>
         </div>
 
-        <div className="bg-white dark:bg-neutral-900 rounded-lg p-4 flex justify-between items-center border border-blue-100 shadow-sm">
+        <div className="bg-white dark:bg-black rounded-lg p-4 flex justify-between items-center border border-blue-100 shadow-sm">
           <div>
             <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 font-medium">Per Box Cost</div>
             <div className="text-3xl font-bold text-green-600">₹ {perBoxCost.toFixed(2)}</div>

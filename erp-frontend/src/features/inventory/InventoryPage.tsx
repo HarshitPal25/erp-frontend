@@ -78,10 +78,10 @@ export function InventoryPage() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col h-[calc(100vh-140px)]">
+      <div className="bg-white dark:bg-black rounded-xl shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col h-[calc(100vh-140px)]">
         
         {/* Tabs Header */}
-        <div className="border-b border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-black/50 px-4 pt-4">
+        <div className="border-b border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-black px-4 pt-4">
           <div className="flex space-x-6 overflow-x-auto pb-px custom-scrollbar">
             {categories.map((category) => {
               const isActive = activeCategory === category;
@@ -92,7 +92,7 @@ export function InventoryPage() {
                   className={`whitespace-nowrap pb-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                     isActive
                       ? 'border-blue-600 text-blue-600'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:border-gray-300'
                   }`}
                 >
                   {category}

@@ -52,7 +52,7 @@ export function AddStockForm({ inventoryId, itemName, unit, onSubmit, isSubmitti
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Transaction Type *</label>
+          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Transaction Type *</label>
           <select {...register('type')} className={inputClass}>
             <option value="IN">Stock IN (Receive)</option>
             <option value="OUT">Stock OUT (Issue)</option>
@@ -61,7 +61,7 @@ export function AddStockForm({ inventoryId, itemName, unit, onSubmit, isSubmitti
         </div>
         
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Quantity ({unit}) *</label>
+          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Quantity ({unit}) *</label>
           <input 
             {...register('quantity')} 
             type="number" 
@@ -74,7 +74,7 @@ export function AddStockForm({ inventoryId, itemName, unit, onSubmit, isSubmitti
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-gray-700 mb-1">Reference Number (PO / WO) *</label>
+        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Reference Number (PO / WO) *</label>
         <input 
           {...register('referenceNumber')} 
           placeholder="e.g. PO-2024-001" 
@@ -84,7 +84,7 @@ export function AddStockForm({ inventoryId, itemName, unit, onSubmit, isSubmitti
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-gray-700 mb-1">Notes (Optional)</label>
+        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Notes (Optional)</label>
         <textarea 
           {...register('notes')} 
           placeholder="Add any additional details here..." 

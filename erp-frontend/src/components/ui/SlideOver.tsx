@@ -31,7 +31,7 @@ export function SlideOver({ isOpen, onClose, title, children }: SlideOverProps) 
       />
 
       <div
-        className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white dark:bg-neutral-900 shadow-xl transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white dark:bg-black shadow-xl transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="slide-over-title"

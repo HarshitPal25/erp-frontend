@@ -33,14 +33,14 @@ export function RecentOrdersTable() {
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 p-6 text-gray-900 dark:text-gray-100">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-black p-6 text-gray-900 dark:text-gray-100">
         Loading Orders...
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 shadow-sm">
+    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
       <div className="border-b border-gray-200 dark:border-gray-800 px-5 py-4">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           Recent Orders

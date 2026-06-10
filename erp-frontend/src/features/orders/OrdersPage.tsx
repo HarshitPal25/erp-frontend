@@ -50,9 +50,9 @@ export function OrdersPage() {
       </div>
 
       {/* Filters and Table */}
-      <div className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-xl shadow-sm overflow-hidden flex flex-col">
+      <div className="bg-white dark:bg-black border border-gray-200 dark:border-neutral-800 rounded-xl shadow-sm overflow-hidden flex flex-col">
         {/* Toolbar */}
-        <div className="p-4 border-b border-gray-200 dark:border-neutral-800 flex flex-col sm:flex-row gap-4 justify-between bg-gray-50 dark:bg-black/50">
+        <div className="p-4 border-b border-gray-200 dark:border-neutral-800 flex flex-col sm:flex-row gap-4 justify-between bg-gray-50 dark:bg-black">
           <div className="relative max-w-md w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
@@ -68,7 +68,7 @@ export function OrdersPage() {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-600 dark:text-gray-400">
-            <thead className="bg-gray-50 dark:bg-black text-gray-700 font-medium border-b border-gray-200 dark:border-neutral-800 uppercase text-xs tracking-wider">
+            <thead className="bg-gray-50 dark:bg-black text-gray-700 dark:text-gray-300 font-medium border-b border-gray-200 dark:border-neutral-800 uppercase text-xs tracking-wider">
               <tr>
                 <th className="px-6 py-4">Order #</th>
                 <th className="px-6 py-4">Customer</th>
@@ -101,7 +101,7 @@ export function OrdersPage() {
                 </tr>
               ) : (
                 filteredOrders.map((order) => (
-                  <tr key={order._id || order.orderNumber} className="hover:bg-gray-50 dark:bg-black/50 transition-colors">
+                  <tr key={order._id || order.orderNumber} className="hover:bg-gray-50 dark:bg-black transition-colors">
                     <td className="px-6 py-4 font-medium text-blue-600 whitespace-nowrap">
                       {order.orderNumber}
                     </td>
@@ -122,7 +122,7 @@ export function OrdersPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-xs space-y-1">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-neutral-800 text-gray-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-neutral-800 text-gray-800 dark:text-gray-200">
                           {order.boxType || 'No Type'}
                         </span>
                         {(order.length || order.breadth || order.height) && (

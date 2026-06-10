@@ -76,16 +76,16 @@ export function AddNewItemForm({ onSubmit, isSubmitting, defaultCategory }: AddN
         <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-neutral-800 pb-2">Basic Details</h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Item Code (Auto-Generated) *</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Item Code (Auto-Generated) *</label>
             <input 
               {...register('itemCode')} 
               readOnly
-              className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-100 dark:bg-neutral-800 px-3 py-2 text-sm text-gray-700 font-mono focus:outline-none cursor-not-allowed" 
+              className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-gray-100 dark:bg-neutral-800 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 font-mono focus:outline-none cursor-not-allowed" 
             />
             {errors.itemCode && <p className="mt-1 text-xs text-red-500">{errors.itemCode.message}</p>}
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Item Name *</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Item Name *</label>
             <input {...register('itemName')} placeholder="e.g. Duplex Reel 350 GSM" className={inputClass} />
             {errors.itemName && <p className="mt-1 text-xs text-red-500">{errors.itemName.message}</p>}
           </div>
@@ -93,7 +93,7 @@ export function AddNewItemForm({ onSubmit, isSubmitting, defaultCategory }: AddN
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Type *</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Type *</label>
             <select {...register('type')} className={inputClass}>
               <option value="RawMaterial">Raw Material</option>
               <option value="Consumable">Consumable</option>
@@ -101,7 +101,7 @@ export function AddNewItemForm({ onSubmit, isSubmitting, defaultCategory }: AddN
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Category *</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Category *</label>
             <select {...register('category')} className={inputClass}>
               {STOCK_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
@@ -109,7 +109,7 @@ export function AddNewItemForm({ onSubmit, isSubmitting, defaultCategory }: AddN
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Unit of Measure *</label>
+          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Unit of Measure *</label>
           <select {...register('unitOfMeasure')} className={inputClass}>
             <option value="KG">KG</option>
             <option value="Sheets">Sheets</option>
@@ -127,11 +127,11 @@ export function AddNewItemForm({ onSubmit, isSubmitting, defaultCategory }: AddN
         <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-neutral-800 pb-2">Specifications</h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">GSM</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">GSM</label>
             <input {...register('specifications.gsm')} placeholder="e.g. 250" className={inputClass} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Dimensions / Size</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Dimensions / Size</label>
             <input {...register('specifications.dimensions')} placeholder="e.g. 28x40 inch" className={inputClass} />
           </div>
         </div>
@@ -142,18 +142,18 @@ export function AddNewItemForm({ onSubmit, isSubmitting, defaultCategory }: AddN
         <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-neutral-800 pb-2">Inventory Settings</h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Initial Stock *</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Initial Stock *</label>
             <input {...register('initialStock')} type="number" step="0.01" className={inputClass} />
             {errors.initialStock && <p className="mt-1 text-xs text-red-500">{errors.initialStock.message}</p>}
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Reorder Level *</label>
+            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Reorder Level *</label>
             <input {...register('reorderLevel')} type="number" step="0.01" className={inputClass} />
             {errors.reorderLevel && <p className="mt-1 text-xs text-red-500">{errors.reorderLevel.message}</p>}
           </div>
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Warehouse Location</label>
+          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Warehouse Location</label>
           <input {...register('warehouseLocation')} placeholder="e.g. Zone A - Rack 3" className={inputClass} />
         </div>
       </div>

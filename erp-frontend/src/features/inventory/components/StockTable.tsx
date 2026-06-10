@@ -31,7 +31,7 @@ export function StockTable({ data, isLoading, onViewLedger, onAddStock }: StockT
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-sm text-gray-600 dark:text-gray-400">
-        <thead className="bg-gray-50 dark:bg-black text-gray-700 font-medium border-b border-gray-200 dark:border-neutral-800 uppercase text-xs tracking-wider">
+        <thead className="bg-gray-50 dark:bg-black text-gray-700 dark:text-gray-300 font-medium border-b border-gray-200 dark:border-neutral-800 uppercase text-xs tracking-wider">
           <tr>
             <th className="px-6 py-4">Item Details</th>
             <th className="px-6 py-4">Specifications</th>
@@ -46,7 +46,7 @@ export function StockTable({ data, isLoading, onViewLedger, onAddStock }: StockT
             const isLowStock = record.currentStock <= record.reorderLevel;
 
             return (
-              <tr key={record._id} className="hover:bg-gray-50 dark:bg-black/50 transition-colors">
+              <tr key={record._id} className="hover:bg-gray-50 dark:bg-black transition-colors">
                 <td className="px-6 py-4">
                   <div className="font-medium text-gray-900 dark:text-gray-100">{item.itemName}</div>
                   <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Code: {item.itemCode}</div>
@@ -58,7 +58,7 @@ export function StockTable({ data, isLoading, onViewLedger, onAddStock }: StockT
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-neutral-800 text-gray-800">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-neutral-800 text-gray-800 dark:text-gray-200">
                     {record.warehouseLocation || 'Unassigned'}
                   </span>
                 </td>
