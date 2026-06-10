@@ -206,7 +206,7 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
             <input {...register('itemName')} placeholder="Item Description" className={inputClass} />
           </FormField>
           <FormField label="Quantity Ordered *" error={errors.quantityOrdered?.message}>
-            <input {...register('quantityOrdered')} type="number" placeholder="Qty" className={inputClass} />
+            <input {...register('quantityOrdered')} type="number" min="0" placeholder="Qty" className={inputClass} />
           </FormField>
         </div>
       </div>
@@ -244,19 +244,19 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
         </div>
         <div className="grid grid-cols-5 gap-3">
           <FormField label="Length (in)" error={errors.length?.message}>
-            <input {...register('length')} type="number" step="0.1" className={inputClass} />
+            <input {...register('length')} type="number" min="0" step="0.1" className={inputClass} />
           </FormField>
           <FormField label="Breadth (in)" error={errors.breadth?.message}>
-            <input {...register('breadth')} type="number" step="0.1" className={inputClass} />
+            <input {...register('breadth')} type="number" min="0" step="0.1" className={inputClass} />
           </FormField>
           <FormField label="Height (in)" error={errors.height?.message}>
-            <input {...register('height')} type="number" step="0.1" className={inputClass} />
+            <input {...register('height')} type="number" min="0" step="0.1" className={inputClass} />
           </FormField>
           <FormField label="Sheet Length" error={errors.sheetLength?.message}>
-            <input {...register('sheetLength')} type="number" step="0.1" className={inputClass} />
+            <input {...register('sheetLength')} type="number" min="0" step="0.1" className={inputClass} />
           </FormField>
           <FormField label="Sheet Breadth" error={errors.sheetBreadth?.message}>
-            <input {...register('sheetBreadth')} type="number" step="0.1" className={inputClass} />
+            <input {...register('sheetBreadth')} type="number" min="0" step="0.1" className={inputClass} />
           </FormField>
         </div>
       </div>
@@ -264,20 +264,20 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
       <div className={sectionClass}>
         <h3 className={sectionTitleClass}>3. Duplex / Paper Board Cost</h3>
         <div className="grid grid-cols-4 gap-4 mb-4">
-          <FormField label="Length" error={errors.duplexLength?.message}>
-            <input {...register('duplexLength')} type="number" step="0.1" className={inputClass} />
+          <FormField label="Length (in)" error={errors.duplexLength?.message}>
+            <input {...register('duplexLength')} type="number" step="any" min="0" className={inputClass} />
           </FormField>
-          <FormField label="Breadth" error={errors.duplexBreadth?.message}>
-            <input {...register('duplexBreadth')} type="number" step="0.1" className={inputClass} />
+          <FormField label="Breadth (in)" error={errors.duplexBreadth?.message}>
+            <input {...register('duplexBreadth')} type="number" step="any" min="0" className={inputClass} />
           </FormField>
           <FormField label="GSM" error={errors.duplexGsm?.message}>
-            <input {...register('duplexGsm')} type="number" className={inputClass} />
+            <input {...register('duplexGsm')} type="number" min="0" className={inputClass} />
           </FormField>
-          <FormField label="Rate" error={errors.duplexRate?.message}>
-            <input {...register('duplexRate')} type="number" step="0.1" className={inputClass} />
+          <FormField label="Rate (₹/kg)" error={errors.duplexRate?.message}>
+            <input {...register('duplexRate')} type="number" step="any" min="0" className={inputClass} />
           </FormField>
         </div>
-        <div className="bg-blue-50 text-blue-800 p-3 rounded-lg text-xs flex justify-between items-center">
+        <div className="bg-blue-50 dark:bg-gray-800/50 text-blue-800 dark:text-gray-200 p-3 rounded-lg text-xs flex justify-between items-center border border-transparent dark:border-neutral-800">
           <span>Area: <strong>{dL * dB} sq in</strong></span>
           <span>Weight/Sheet: <strong>{duplexWeightKg > 0 ? duplexWeightKg.toFixed(3) : 0} kg</strong></span>
           <span>Qty Req: <strong>{duplexQtyReq > 0 ? duplexQtyReq : 0} sheets</strong></span>
@@ -297,14 +297,14 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
             </select>
           </FormField>
           <FormField label="GSM of Each Ply" error={errors.twoPlyGsm?.message}>
-            <input {...register('twoPlyGsm')} type="number" className={inputClass} />
+            <input {...register('twoPlyGsm')} type="number" min="0" className={inputClass} />
           </FormField>
-          <FormField label="Rate of Roll" error={errors.twoPlyRate?.message}>
-            <input {...register('twoPlyRate')} type="number" step="0.1" className={inputClass} />
+          <FormField label="Rate of Roll (₹)" error={errors.twoPlyRate?.message}>
+            <input {...register('twoPlyRate')} type="number" step="any" min="0" className={inputClass} />
           </FormField>
         </div>
         {num2Ply > 0 && (
-          <div className="bg-blue-50 text-blue-800 p-3 rounded-lg text-xs text-right">
+          <div className="bg-blue-50 dark:bg-gray-800/50 text-blue-800 dark:text-gray-200 border border-transparent dark:border-neutral-800 p-3 rounded-lg text-xs text-right">
             2-Ply Total Cost: <strong>₹{twoPlyTotalCost.toFixed(2)}</strong>
           </div>
         )}
@@ -323,34 +323,34 @@ export function OrderForm({ onSubmit, isSubmitting, defaultValues }: OrderFormPr
 
         {isLaminated && (
           <div className="grid grid-cols-5 gap-3 mb-6 p-4 bg-gray-50 dark:bg-black border border-gray-100 dark:border-neutral-800 rounded-lg">
-            <FormField label="Roll Size"><input {...register('lamRollSize')} className={inputClass} /></FormField>
-            <FormField label="Sheet Len"><input {...register('lamSheetLength')} className={inputClass} /></FormField>
+            <FormField label="Roll Size (in)"><input {...register('lamRollSize')} type="number" step="any" min="0" className={inputClass} /></FormField>
+            <FormField label="Sheet Len (in)"><input {...register('lamSheetLength')} type="number" step="any" min="0" className={inputClass} /></FormField>
             <FormField label="Type">
               <select {...register('lamType')} className={inputClass}>
                 <option value="BOPP">BOPP</option>
                 <option value="MAT">MAT</option>
               </select>
             </FormField>
-            <FormField label="Fevicol/Sht"><input {...register('fevicolCostPerSheet')} type="number" step="0.1" className={inputClass} /></FormField>
-            <FormField label="Cost/Sht"><input {...register('lamCostPerSheet')} type="number" step="0.1" className={inputClass} /></FormField>
+            <FormField label="Fevicol/Sht (₹)"><input {...register('fevicolCostPerSheet')} type="number" step="any" min="0" className={inputClass} /></FormField>
+            <FormField label="Cost/Sht (₹)"><input {...register('lamCostPerSheet')} type="number" step="any" min="0" className={inputClass} /></FormField>
           </div>
         )}
 
         <div className="grid grid-cols-3 gap-4">
-          <FormField label="Spot UV Size"><input {...register('spotUvSize')} className={inputClass} /></FormField>
-          <FormField label="Spot UV Sheets"><input {...register('spotUvSheets')} type="number" className={inputClass} /></FormField>
-          <FormField label="Cost per Sheet"><input {...register('spotUvCost')} type="number" step="0.1" className={inputClass} /></FormField>
+          <FormField label="Spot UV Size (sq in)"><input {...register('spotUvSize')} type="number" step="any" min="0" className={inputClass} /></FormField>
+          <FormField label="Spot UV Sheets"><input {...register('spotUvSheets')} type="number" min="0" className={inputClass} /></FormField>
+          <FormField label="Cost/Sheet (₹)"><input {...register('spotUvCost')} type="number" step="any" min="0" className={inputClass} /></FormField>
         </div>
       </div>
 
       <div className={sectionClass}>
         <h3 className={sectionTitleClass}>6. Processing Costs</h3>
         <div className="grid grid-cols-5 gap-3">
-          <FormField label="Sheeter (Cost/2Ply)"><input {...register('sheeterRate')} type="number" step="0.1" className={inputClass} /></FormField>
-          <FormField label="Pasting (Cost/Sht)"><input {...register('pastingRate')} type="number" step="0.1" className={inputClass} /></FormField>
-          <FormField label="Die (Cost/Sht)"><input {...register('dieRate')} type="number" step="0.1" className={inputClass} /></FormField>
-          <FormField label="Stitch (Cost/Box)"><input {...register('stitchingRate')} type="number" step="0.1" className={inputClass} /></FormField>
-          <FormField label="Strap (Cost/Bndl)"><input {...register('strappingRate')} type="number" step="0.1" className={inputClass} /></FormField>
+          <FormField label="Sheeter (₹/2Ply)"><input {...register('sheeterRate')} type="number" step="any" min="0" className={inputClass} /></FormField>
+          <FormField label="Pasting (₹/Sht)"><input {...register('pastingRate')} type="number" step="any" min="0" className={inputClass} /></FormField>
+          <FormField label="Die (₹/Sht)"><input {...register('dieRate')} type="number" step="any" min="0" className={inputClass} /></FormField>
+          <FormField label="Stitch (₹/Box)"><input {...register('stitchingRate')} type="number" step="any" min="0" className={inputClass} /></FormField>
+          <FormField label="Strap (₹/Bndl)"><input {...register('strappingRate')} type="number" step="any" min="0" className={inputClass} /></FormField>
         </div>
         <div className="text-right text-xs text-gray-500 dark:text-gray-400 mt-2">
           Total Processing: <strong className="text-gray-900 dark:text-gray-100">₹{processingTotal.toFixed(2)}</strong>

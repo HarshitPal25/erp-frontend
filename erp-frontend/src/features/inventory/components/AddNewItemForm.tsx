@@ -143,12 +143,12 @@ export function AddNewItemForm({ onSubmit, isSubmitting, defaultCategory }: AddN
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Initial Stock *</label>
-            <input {...register('initialStock')} type="number" step="0.01" className={inputClass} />
+            <input {...register('initialStock')} type="number" min="0" step="0.01" className={inputClass} />
             {errors.initialStock && <p className="mt-1 text-xs text-red-500">{errors.initialStock.message}</p>}
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Reorder Level *</label>
-            <input {...register('reorderLevel')} type="number" step="0.01" className={inputClass} />
+            <input {...register('reorderLevel')} type="number" min="0" step="0.01" className={inputClass} />
             {errors.reorderLevel && <p className="mt-1 text-xs text-red-500">{errors.reorderLevel.message}</p>}
           </div>
         </div>

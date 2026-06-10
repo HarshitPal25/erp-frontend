@@ -64,7 +64,7 @@ export function AddStockForm({ inventoryId, itemName, unit, onSubmit, isSubmitti
           <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Quantity ({unit}) *</label>
           <input 
             {...register('quantity')} 
-            type="number" 
+            type="number" min="0" 
             step="0.01" 
             placeholder="e.g. 500" 
             className={inputClass} 
