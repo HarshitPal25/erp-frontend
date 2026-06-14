@@ -1,59 +1,45 @@
-import { type ElementType } from 'react';
+import { useState, useEffect, type ElementType } from 'react';
 import { ShoppingCart, Factory, Package, Truck, TrendingUp, TrendingDown } from 'lucide-react';
 import clsx from 'clsx';
 import { RecentOrdersTable } from './components/RecentOrdersTable';
 import { QuickActions } from './components/QuickActions';
+import { getDashboardStats, type DashboardStats } from '../../services/api/dashboard';
 
 type Trend = 'up' | 'down' | 'neutral';
 
-interface StatCard {
+interface StatCardConfig {
+  key: keyof DashboardStats;
   label: string;
-  value: string;
-  sub: string;
-  trend: Trend;
-  trendLabel: string;
   icon: ElementType;
   iconBg: string;
   iconColor: string;
 }
 
-const stats: StatCard[] = [
+const statConfigs: StatCardConfig[] = [
   {
+    key: 'totalOrders',
     label: 'Total Orders',
-    value: '248',
-    sub: 'This month',
-    trend: 'up',
-    trendLabel: '+12% from last month',
     icon: ShoppingCart,
     iconBg: 'bg-blue-50 dark:bg-blue-900/20',
     iconColor: 'text-blue-600 dark:text-blue-400',
   },
   {
+    key: 'activeProduction',
     label: 'Active Production',
-    value: '34',
-    sub: 'Jobs in progress',
-    trend: 'up',
-    trendLabel: '+5 since yesterday',
     icon: Factory,
     iconBg: 'bg-amber-50 dark:bg-amber-900/20',
     iconColor: 'text-amber-600 dark:text-amber-400',
   },
   {
+    key: 'inventoryItems',
     label: 'Inventory Items',
-    value: '1,204',
-    sub: 'Across 12 categories',
-    trend: 'down',
-    trendLabel: '−3% from last week',
     icon: Package,
     iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
     iconColor: 'text-emerald-600 dark:text-emerald-400',
   },
   {
+    key: 'pendingDeliveries',
     label: 'Pending Deliveries',
-    value: '18',
-    sub: 'Awaiting dispatch',
-    trend: 'neutral',
-    trendLabel: 'No change',
     icon: Truck,
     iconBg: 'bg-violet-50 dark:bg-violet-900/20',
     iconColor: 'text-violet-600 dark:text-violet-400',
@@ -81,6 +67,15 @@ function TrendBadge({ trend, label }: { trend: Trend; label: string }) {
 }
 
 export function DashboardPage() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getDashboardStats()
+      .then((res) => setStats(res.data))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div>
       <div className="mb-6">
@@ -89,27 +84,36 @@ export function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
+        {statConfigs.map((config) => {
+          const Icon = config.icon;
+          const stat = stats?.[config.key];
+          const value = loading ? '...' : stat?.value?.toLocaleString() ?? '0';
+          const sub = stat?.sub ?? '';
+          const trend = stat?.trend ?? 'neutral';
+          const trendLabel = stat?.trendLabel ?? '';
+
           return (
             <div
-              key={stat.label}
-              className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800/50 px-5 py-4 shadow-sm"
+              key={config.key}
+              className={clsx(
+                'rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800/50 px-5 py-4 shadow-sm transition-opacity',
+                loading && 'animate-pulse'
+              )}
             >
               <div className="flex items-start justify-between">
-                <div className={clsx('flex h-10 w-10 items-center justify-center rounded-lg', stat.iconBg)}>
-                  <Icon size={20} className={stat.iconColor} aria-hidden="true" />
+                <div className={clsx('flex h-10 w-10 items-center justify-center rounded-lg', config.iconBg)}>
+                  <Icon size={20} className={config.iconColor} aria-hidden="true" />
                 </div>
               </div>
 
               <div className="mt-4">
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
-                <p className="mt-0.5 text-sm font-medium text-gray-600 dark:text-gray-400">{stat.label}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
+                <p className="mt-0.5 text-sm font-medium text-gray-600 dark:text-gray-400">{config.label}</p>
               </div>
 
               <div className="mt-3 flex items-center justify-between border-t border-gray-100 dark:border-gray-800 pt-3">
-                <TrendBadge trend={stat.trend} label={stat.trendLabel} />
-                <span className="text-xs text-gray-400 dark:text-gray-500 dark:text-gray-400">{stat.sub}</span>
+                {!loading && <TrendBadge trend={trend} label={trendLabel} />}
+                <span className="text-xs text-gray-400 dark:text-gray-500">{sub}</span>
               </div>
             </div>
           );
