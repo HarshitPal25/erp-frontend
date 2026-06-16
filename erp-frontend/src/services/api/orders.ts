@@ -28,18 +28,19 @@ export async function updateOrder(
   return response.data;
 }
 
-// ✅ ADD THIS FUNCTION
 export async function updateOrderStatus(
   id: string,
   status: string
 ): Promise<any> {
-  const response = await api.patch(
-    `${ENDPOINT}/${id}/status`,
-    {
-      status,
-    }
-  );
+  const response = await api.patch(`${ENDPOINT}/${id}/status`, { status });
+  return response.data;
+}
 
+export async function updateDelivery(
+  id: string,
+  quantityDelivered: number
+): Promise<any> {
+  const response = await api.patch(`${ENDPOINT}/${id}/delivery`, { quantityDelivered });
   return response.data;
 }
 
