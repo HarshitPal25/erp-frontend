@@ -1,4 +1,4 @@
-import { Plus, Users, PackagePlus, Printer, Truck } from 'lucide-react';
+import { Plus, Users, PackagePlus, Printer, Truck, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const actions = [
@@ -41,6 +41,14 @@ const actions = [
     icon: Truck,
     iconColor: 'text-violet-700',
     iconBg: 'bg-violet-100',
+  },
+  {
+    name: 'Item Master',
+    description: 'Manage global item definitions',
+    href: '/items',
+    icon: Layers,
+    iconColor: 'text-pink-700',
+    iconBg: 'bg-pink-100',
   },
 ];
 
