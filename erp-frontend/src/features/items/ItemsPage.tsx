@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import { Plus, PackageSearch, Tag, Layers, Package } from 'lucide-react';
-import { useItems, useCreateItem } from './hooks/useItems';
+import { Plus, PackageSearch, Tag, Layers, Package, Pencil, Trash2 } from 'lucide-react';
+import { useItems, useCreateItem, useUpdateItem, useDeleteItem } from './hooks/useItems';
 import { ItemForm } from './components/ItemForm';
 import { SlideOver } from '../../components/ui/SlideOver';
-import type { ItemFormData } from './types';
+import type { ItemFormData, Item } from './types';
 
 export function ItemsPage() {
   const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
   const { data: itemsData, isLoading } = useItems();
   const createMutation = useCreateItem();
+  const updateMutation = useUpdateItem();
+  const deleteMutation = useDeleteItem();
+
+  const [editingItem, setEditingItem] = useState<Item | null>(null);
 
   const items = itemsData?.data || [];
 
@@ -20,6 +24,32 @@ export function ItemsPage() {
     });
   };
 
+  const handleUpdate = (data: ItemFormData) => {
+    if (!editingItem) return;
+    updateMutation.mutate({ id: editingItem._id, data }, {
+      onSuccess: () => {
+        setIsSlideOverOpen(false);
+        setEditingItem(null);
+      }
+    });
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this item?')) {
+      deleteMutation.mutate(id);
+    }
+  };
+
+  const openEdit = (item: Item) => {
+    setEditingItem(item);
+    setIsSlideOverOpen(true);
+  };
+
+  const closeSlideOver = () => {
+    setIsSlideOverOpen(false);
+    setEditingItem(null);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -28,7 +58,10 @@ export function ItemsPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage global item definitions, brands, and specifications.</p>
         </div>
         <button
-          onClick={() => setIsSlideOverOpen(true)}
+          onClick={() => {
+            setEditingItem(null);
+            setIsSlideOverOpen(true);
+          }}
           className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-all shadow-sm"
         >
           <Plus size={18} />
@@ -46,16 +79,17 @@ export function ItemsPage() {
                 <th className="px-6 py-4 font-semibold text-gray-900 dark:text-gray-100">Category</th>
                 <th className="px-6 py-4 font-semibold text-gray-900 dark:text-gray-100">Specifications</th>
                 <th className="px-6 py-4 font-semibold text-gray-900 dark:text-gray-100">UOM</th>
+                <th className="px-6 py-4 font-semibold text-gray-900 dark:text-gray-100 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">Loading items...</td>
+                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">Loading items...</td>
                 </tr>
               ) : items.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center">
+                  <td colSpan={6} className="px-6 py-12 text-center">
                     <div className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400">
                       <PackageSearch size={48} className="mb-4 text-gray-300 dark:text-gray-600" />
                       <p className="text-base font-medium text-gray-900 dark:text-gray-100">No items found</p>
@@ -110,6 +144,24 @@ export function ItemsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-gray-500 dark:text-gray-400">{item.unitOfMeasure}</td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => openEdit(item)}
+                          className="p-1.5 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                          title="Edit Item"
+                        >
+                          <Pencil size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item._id)}
+                          className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                          title="Delete Item"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))
               )}
@@ -120,10 +172,14 @@ export function ItemsPage() {
 
       <SlideOver
         isOpen={isSlideOverOpen}
-        onClose={() => setIsSlideOverOpen(false)}
-        title="Add New Item"
+        onClose={closeSlideOver}
+        title={editingItem ? "Edit Item" : "Add New Item"}
       >
-        <ItemForm onSubmit={handleCreate} isSubmitting={createMutation.isPending} />
+        <ItemForm 
+          initialData={editingItem || undefined}
+          onSubmit={editingItem ? handleUpdate : handleCreate} 
+          isSubmitting={createMutation.isPending || updateMutation.isPending} 
+        />
       </SlideOver>
     </div>
   );

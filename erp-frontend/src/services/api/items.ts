@@ -21,3 +21,28 @@ export async function createItem(data: ItemFormData) {
   mockItems.unshift(newItem);
   return { data: newItem, success: true, message: 'Item created successfully' };
 }
+
+export async function updateItem(id: string, data: ItemFormData) {
+  await delay(800);
+  
+  const index = mockItems.findIndex(i => i._id === id);
+  if (index === -1) throw new Error('Item not found');
+
+  const updatedItem: Item = {
+    ...mockItems[index],
+    ...data
+  };
+  
+  mockItems[index] = updatedItem;
+  return { data: updatedItem, success: true, message: 'Item updated successfully' };
+}
+
+export async function deleteItem(id: string) {
+  await delay(800);
+  
+  const index = mockItems.findIndex(i => i._id === id);
+  if (index === -1) throw new Error('Item not found');
+
+  mockItems.splice(index, 1);
+  return { data: { _id: id }, success: true, message: 'Item deleted successfully' };
+}

@@ -2,7 +2,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { STOCK_CATEGORIES } from '../../../mocks/items';
-import type { ItemFormData } from '../types';
+import type { ItemFormData, Item } from '../types';
+import { useEffect } from 'react';
 
 const schema = z.object({
   itemName: z.string().min(2, 'Item Name is required'),
@@ -26,19 +27,42 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 interface ItemFormProps {
+  initialData?: Item;
   onSubmit: (data: ItemFormData) => void;
   isSubmitting: boolean;
 }
 
-export function ItemForm({ onSubmit, isSubmitting }: ItemFormProps) {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormValues>({
+export function ItemForm({ initialData, onSubmit, isSubmitting }: ItemFormProps) {
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
+    defaultValues: initialData ? {
+      itemName: initialData.itemName,
+      brand: initialData.brand || '',
+      type: initialData.type,
+      category: initialData.category,
+      unitOfMeasure: initialData.unitOfMeasure,
+      itemSpecification: initialData.itemSpecification || {},
+      boxSpecification: initialData.boxSpecification || {},
+    } : {
       type: 'RawMaterial',
       category: STOCK_CATEGORIES[0],
       unitOfMeasure: 'KG'
     }
   });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        itemName: initialData.itemName,
+        brand: initialData.brand || '',
+        type: initialData.type,
+        category: initialData.category,
+        unitOfMeasure: initialData.unitOfMeasure,
+        itemSpecification: initialData.itemSpecification || {},
+        boxSpecification: initialData.boxSpecification || {},
+      });
+    }
+  }, [initialData, reset]);
 
   const category = watch('category');
   const isFinishedGood = category === 'Finished Boxes';
@@ -149,7 +173,7 @@ export function ItemForm({ onSubmit, isSubmitting }: ItemFormProps) {
           disabled={isSubmitting}
           className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          {isSubmitting ? 'Creating Item...' : 'Create Item'}
+          {isSubmitting ? (initialData ? 'Updating Item...' : 'Creating Item...') : (initialData ? 'Update Item' : 'Create Item')}
         </button>
       </div>
     </form>
