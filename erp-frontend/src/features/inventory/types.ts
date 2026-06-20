@@ -1,4 +1,4 @@
-export type ItemType = 'Duplex' | 'Reel' | 'PrintedPaper' | 'FinishedGood';
+export type ItemType = 'Duplex' | 'Reel' | 'PrintedPaper' | 'FinishedGood' | 'RawMaterial' | 'Consumable';
 
 export interface ItemSpecifications {
   gsm?: number;

@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, ShoppingCart, Users, Package, Box, ChevronRight, LogOut, Menu, Moon, Sun, Printer, Truck } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Users, Package, Box, ChevronRight, LogOut, Menu, Moon, Sun, Printer, Truck, Layers } from 'lucide-react';
 import clsx from 'clsx';
 import { useAuth } from '../../features/auth/auth';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -8,6 +8,7 @@ const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/orders', label: 'Orders', icon: ShoppingCart },
   { to: '/customers', label: 'Customers', icon: Users },
+  { to: '/items', label: 'Item Master', icon: Layers },
   { to: '/inventory', label: 'Inventory', icon: Package },
   { to: '/jobwork', label: 'Job Work', icon: Printer },
   { to: '/dispatch', label: 'Dispatch', icon: Truck },
@@ -17,6 +18,7 @@ const routeNames: Record<string, string> = {
   '/': 'Dashboard',
   '/orders': 'Orders',
   '/customers': 'Customers',
+  '/items': 'Item Master',
   '/inventory': 'Inventory',
   '/jobwork': 'Job Work',
   '/dispatch': 'Dispatch',

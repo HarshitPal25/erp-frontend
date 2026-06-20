@@ -7,8 +7,10 @@ import { CustomersPage } from "./features/customers/CustomersPage";
 import { InventoryPage } from "./features/inventory/InventoryPage";
 import { JobWorkPage } from "./features/jobwork/JobWorkPage";
 import { DispatchPage } from "./features/dispatch/DispatchPage";
+import { ItemsPage } from "./features/items/ItemsPage";
 import { LoginPage } from "./features/auth/LoginPage";
 import { useAuth } from "./features/auth/auth";
+
 
 function ProtectedRoutes() {
   const { user, isCheckingAuth } = useAuth();
@@ -38,6 +40,7 @@ function App() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/customers" element={<CustomersPage />} />
+          <Route path="/items" element={<ItemsPage />} />
           <Route path="/inventory" element={<InventoryPage />} />
           <Route path="/jobwork" element={<JobWorkPage />} />
           <Route path="/dispatch" element={<DispatchPage />} />

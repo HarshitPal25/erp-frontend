@@ -83,7 +83,7 @@ export function CustomersPage() {
       'Email': c.email || '',
       'Phone': c.phone || '',
       'GSTIN': c.gstNumber || '',
-      'Address': c.address || '',
+      'Address': c.billingAddress || '',
       'Credit Limit': c.creditLimit || 0,
       'Outstanding': c.outstandingBalance || 0,
     }));
