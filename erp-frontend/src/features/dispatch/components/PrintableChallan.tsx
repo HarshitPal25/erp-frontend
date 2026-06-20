@@ -1,4 +1,4 @@
-import type { DispatchFormData } from '../types';
+
 
 interface PrintableChallanProps {
   dispatchData: any;
