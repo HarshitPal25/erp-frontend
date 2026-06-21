@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "../../../services/api/client";
 
-const API_URL = "http://localhost:5001/api/orders";
+
 
 interface Order {
   _id: string;
@@ -18,7 +18,7 @@ export function RecentOrdersTable() {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get(API_URL);
+      const res = await api.get("/orders");
       setOrders(res.data.data);
     } catch (err) {
       console.error(err);
