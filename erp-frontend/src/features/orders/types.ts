@@ -9,6 +9,9 @@ export interface OrderFormData {
   boxType: string;
   printed: boolean;
   laminated: boolean;
+  productionStage?: 'Not Started' | 'Sent to Job Work' | 'Printed' | 'Printed & Laminated';
+  jobWorkRef?: string | null;
+  dispatchRef?: string | null;
   length: string;
   breadth: string;
   height: string;
