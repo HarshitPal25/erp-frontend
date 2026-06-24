@@ -4,17 +4,19 @@ import { useJobWorks, useCreateJobWork, useCompleteJobWork } from './hooks/useJo
 import { useInventory } from '../inventory/hooks/useInventory';
 import { SlideOver } from '../../components/ui/SlideOver';
 import { exportToExcel } from '../../utils/exportToExcel';
+import { useAuth } from '../auth/auth';
 
 const STATUS_FILTERS = ['All', 'Pending', 'Completed'];
 
 export function JobWorkPage() {
+  const { isAdmin, canCreate } = useAuth();
   const [isSlideOverOpen, setIsSlideOverOpen] = useState(false);
   const [activeStatus, setActiveStatus] = useState('All');
   const [formError, setFormError] = useState('');
 
   // Form state
   const [jobNumber, setJobNumber] = useState('');
-  const [jobType, setJobType] = useState<'Printed' | 'Printed+SpotUV'>('Printed');
+  const [jobType, setJobType] = useState<'Printed' | 'Printed+SpotUV' | 'Printed+Laminated'>('Printed');
   const [selectedInventory, setSelectedInventory] = useState('');
   const [quantity, setQuantity] = useState('');
 
@@ -126,13 +128,15 @@ export function JobWorkPage() {
             <Download size={18} />
             Export
           </button>
-          <button
-            onClick={() => { resetForm(); setIsSlideOverOpen(true); }}
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm hover:shadow"
-          >
-            <Plus size={18} />
-            New Job
-          </button>
+          {canCreate && (
+            <button
+              onClick={() => { resetForm(); setIsSlideOverOpen(true); }}
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm hover:shadow"
+            >
+              <Plus size={18} />
+              New Job
+            </button>
+          )}
         </div>
       </div>
 
@@ -215,7 +219,9 @@ export function JobWorkPage() {
                         <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           job.jobType === 'Printed'
                             ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400'
-                            : 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400'
+                            : job.jobType === 'Printed+Laminated'
+                              ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                              : 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400'
                         }`}>
                           <Printer size={12} />
                           {job.jobType}
@@ -247,14 +253,18 @@ export function JobWorkPage() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         {!isCompleted ? (
-                          <button
-                            onClick={() => handleComplete(job._id)}
-                            disabled={completeMutation.isPending}
-                            className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 disabled:opacity-50 transition-colors"
-                          >
-                            <CheckCircle2 size={13} />
-                            Complete
-                          </button>
+                          isAdmin ? (
+                            <button
+                              onClick={() => handleComplete(job._id)}
+                              disabled={completeMutation.isPending}
+                              className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 disabled:opacity-50 transition-colors"
+                            >
+                              <CheckCircle2 size={13} />
+                              Complete
+                            </button>
+                          ) : (
+                            <span className="text-xs text-gray-400 italic">—</span>
+                          )
                         ) : (
                           <span className="text-xs text-gray-400 italic">Done</span>
                         )}
@@ -301,6 +311,7 @@ export function JobWorkPage() {
             >
               <option value="Printed">Printed</option>
               <option value="Printed+SpotUV">Printing + Spot UV</option>
+              <option value="Printed+Laminated">Printed + Laminated</option>
             </select>
           </div>
 

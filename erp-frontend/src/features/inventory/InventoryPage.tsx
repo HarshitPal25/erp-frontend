@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AlertCircle, Plus, Download } from 'lucide-react';
+import { AlertCircle, Plus, Download, Search } from 'lucide-react';
 import { exportToExcel } from '../../utils/exportToExcel';
 import { useInventoryCategories, useInventory, useAddStockTransaction, useLedger, useCreateItem, useDeleteInventoryItem } from './hooks/useInventory';
 import { StockTable } from './components/StockTable';
@@ -7,8 +7,10 @@ import { AddStockForm } from './components/AddStockForm';
 import { StockLedger } from './components/StockLedger';
 import { AddNewItemForm } from './components/AddNewItemForm';
 import { SlideOver } from '../../components/ui/SlideOver';
+import { useAuth } from '../auth/auth';
 
 export function InventoryPage() {
+  const { isAdmin, canCreate } = useAuth();
   const { data: categoriesData } = useInventoryCategories();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   
@@ -21,6 +23,7 @@ export function InventoryPage() {
   const [slideOverOpen, setSlideOverOpen] = useState(false);
   const [slideOverMode, setSlideOverMode] = useState<'add' | 'ledger' | 'createItem' | null>(null);
   const [selectedInventoryId, setSelectedInventoryId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Derived data for SlideOver
   const selectedRecord = inventoryData?.data.find(r => r._id === selectedInventoryId);
@@ -29,6 +32,21 @@ export function InventoryPage() {
   const categories = ['All', ...(categoriesData?.data || [])];
   
   const lowStockCount = inventoryData?.data.filter(r => r.currentStock <= r.reorderLevel).length || 0;
+
+  // Client-side search within the selected category tab.
+  const query = searchTerm.trim().toLowerCase();
+  const filteredInventory = query
+    ? (inventoryData?.data || []).filter((r) => {
+        const item = r.itemRef;
+        return (
+          item?.itemName?.toLowerCase().includes(query) ||
+          item?.itemCode?.toLowerCase().includes(query) ||
+          item?.brand?.toLowerCase().includes(query) ||
+          item?.category?.toLowerCase().includes(query) ||
+          r.warehouseLocation?.toLowerCase().includes(query)
+        );
+      })
+    : (inventoryData?.data || []);
 
   const handleAddStock = (id: string) => {
     setSelectedInventoryId(id);
@@ -43,12 +61,14 @@ export function InventoryPage() {
   };
 
   const handleCreateNewItem = () => {
+    createItemMutation.reset();
     setSlideOverMode('createItem');
     setSlideOverOpen(true);
   };
 
   const handleCloseSlideOver = () => {
     setSlideOverOpen(false);
+    createItemMutation.reset();
     setTimeout(() => {
       setSlideOverMode(null);
       setSelectedInventoryId(null);
@@ -73,14 +93,15 @@ export function InventoryPage() {
           <button
             onClick={() => {
               const exportData = (inventoryData?.data || []).map((r: any) => ({
-                'Item Name': r.itemRef?.name || r.name || '',
+                'Item Name': r.itemRef?.itemName || '',
+                'Brand': r.itemRef?.brand || '',
                 'Category': r.itemRef?.category || r.category || '',
                 'GSM': r.itemRef?.specifications?.gsm || '',
                 'Dimensions': r.itemRef?.specifications?.dimensions || '',
                 'Current Stock': r.currentStock || 0,
                 'Reorder Level': r.reorderLevel || 0,
-                'Unit': r.unit || '',
-                'Warehouse': r.warehouse || '',
+                'Unit': r.itemRef?.unitOfMeasure || '',
+                'Warehouse': r.warehouseLocation || '',
               }));
               exportToExcel(exportData, `Inventory_${new Date().toISOString().slice(0,10)}`, 'Inventory');
             }}
@@ -89,13 +110,15 @@ export function InventoryPage() {
             <Download size={18} />
             Export
           </button>
-          <button
-            onClick={handleCreateNewItem}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm font-medium transition-colors"
-          >
-            <Plus size={18} />
-            <span>New Item Master</span>
-          </button>
+          {canCreate && (
+            <button
+              onClick={handleCreateNewItem}
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm font-medium transition-colors"
+            >
+              <Plus size={18} />
+              <span>New Item Master</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -123,14 +146,30 @@ export function InventoryPage() {
           </div>
         </div>
 
+        {/* Search bar */}
+        <div className="p-4 border-b border-gray-200 dark:border-neutral-800 bg-white dark:bg-gray-800/50">
+          <div className="relative max-w-md w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              placeholder="Search by item, code, brand, category, or location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-neutral-800 bg-white dark:bg-black text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+
         {/* Main Content Area */}
         <div className="flex-1 overflow-y-auto custom-scrollbar p-0 dark:bg-black">
-          <StockTable 
-            data={inventoryData?.data || []} 
-            isLoading={isInventoryLoading} 
+          <StockTable
+            data={filteredInventory}
+            isLoading={isInventoryLoading}
             onAddStock={handleAddStock}
             onViewLedger={handleViewLedger}
             onDelete={(id) => deleteItemMutation.mutate(id)}
+            canAddStock={canCreate}
+            canDelete={isAdmin}
           />
         </div>
       </div>
@@ -176,6 +215,7 @@ export function InventoryPage() {
           <AddNewItemForm
             defaultCategory={activeCategory}
             isSubmitting={createItemMutation.isPending}
+            error={(createItemMutation.error as any)?.response?.data?.message}
             onSubmit={(data) => {
               createItemMutation.mutate(data, {
                 onSuccess: () => {
