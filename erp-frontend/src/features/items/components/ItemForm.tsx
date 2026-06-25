@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { STOCK_CATEGORIES } from '../../../mocks/items';
 import type { ItemFormData, Item } from '../types';
+import { STOCK_CATEGORIES } from '../../../mocks/items';
 import { useEffect } from 'react';
 
 const schema = z.object({
@@ -118,7 +118,7 @@ export function ItemForm({ initialData, onSubmit, isSubmitting }: ItemFormProps)
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-5 p-1 pb-10">
-      
+
       {/* Basic Info */}
       <div className="space-y-4">
         <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-neutral-800 pb-2">Basic Details</h4>
